@@ -33,6 +33,18 @@ export class ProductsComponent implements OnInit {
       price: 23,
       image: './assets/img/books.jpg'
     },
+    {
+      id: '5',
+      name: 'Colleción de albumnes',
+      price: 34,
+      image: './assets/img/album.jpg'
+    },
+    {
+      id: '6',
+      name: 'Mis libros',
+      price: 23,
+      image: './assets/img/books.jpg'
+    },
   ]
 
   constructor() { }
