@@ -1,11 +1,11 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-img',
   templateUrl: './img.component.html',
   styleUrls: ['./img.component.scss']
 })
-export class ImgComponent implements OnInit, OnChanges, AfterViewInit {
+export class ImgComponent implements OnInit {
 
   img: string = '';
   @Input('img')
@@ -23,29 +23,7 @@ export class ImgComponent implements OnInit, OnChanges, AfterViewInit {
     // Before render y no se deben usar operaciones asincronas - solo corre una vez
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    // before - during render
-    // changes inputs -- multiples times ca vez que se actualice un input
-  }
-
-  ngOnInit(): void {
-    // before render
-    // async - fetch -- once time
-    this.counterFn = window.setInterval(() => {
-      this.counter += 1;
-      console.log('running counter');
-    }, 1000)
-  }
-
-  ngAfterViewInit() {
-    // after render
-    // handler children -- once time
-  }
-
-  ngOnDestroy() {
-    // delete -- once time
-    window.clearInterval(this.counterFn)
-  }
+  ngOnInit(): void {}
 
   imgError() {
     this.img = this.imageDefault
