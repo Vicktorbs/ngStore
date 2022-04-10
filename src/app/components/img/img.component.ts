@@ -30,7 +30,7 @@ export class ImgComponent implements OnInit {
   }
 
   igmLoad() {
-    console.log('Log hijo');
+    // console.log('Log hijo');
     this.loaded.emit(this.img)
   }
 
