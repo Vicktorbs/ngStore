@@ -4,6 +4,12 @@
 <p>
   total ${{ total }}
 </p>
+<p>
+  Today: {{ today | timeAgo }}
+</p>
+<p>
+  Otra fecha: {{ date | date:'YYYY.dd.MM' }}
+</p>
 <div class="products--grid">
   <app-product
     [prodcut]="product"
