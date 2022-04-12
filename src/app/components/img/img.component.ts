@@ -1,13 +1,14 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-img',
   templateUrl: './img.component.html',
   styleUrls: ['./img.component.scss']
 })
-export class ImgComponent implements OnInit {
+export class ImgComponent {
 
   img: string = '';
+  // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input('img')
   set changeImg(newImg: string) {
     this.img = newImg;
@@ -22,8 +23,6 @@ export class ImgComponent implements OnInit {
   constructor() {
     // Before render y no se deben usar operaciones asincronas - solo corre una vez
   }
-
-  ngOnInit(): void {}
 
   imgError() {
     this.img = this.imageDefault
