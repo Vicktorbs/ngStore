@@ -28,6 +28,7 @@ export class ProductsComponent implements OnInit {
   };
   limit = 10;
   offset = 0;
+  statusDetail: 'loading' | 'success' | 'error' | 'init' = 'init';
 
   constructor(
     private storeService: StoreService,
@@ -55,11 +56,15 @@ export class ProductsComponent implements OnInit {
   }
 
   onShowDetail(id: string) {
+    this.statusDetail = 'loading';
+    this.toggleProductDetail();
     this.productsService.getProduct(id)
     .subscribe(data => {
-      // console.log(data);
-      this.toggleProductDetail();
       this.productsChosen = data;
+      this.statusDetail = 'success';
+    }, errorMsg => {
+      window.alert(errorMsg);
+      this.statusDetail = 'error';
     })
   }
 
