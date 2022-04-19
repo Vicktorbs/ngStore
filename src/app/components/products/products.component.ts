@@ -40,7 +40,7 @@ export class ProductsComponent implements OnInit {
   ngOnInit(): void {
     this.productsService.getProductsByPage(10, 0)
     .subscribe(data => {
-      // console.log(data);
+      console.log(data);
       this.products = data;
     })
   }

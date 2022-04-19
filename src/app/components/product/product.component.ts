@@ -8,7 +8,7 @@ import { Product } from '../../models/product.models';
 })
 export class ProductComponent {
 
-  @Input() prodcut: Product = {
+  @Input() product: Product = {
     id: '',
     title: '',
     images: [''],
@@ -25,11 +25,11 @@ export class ProductComponent {
   constructor() { }
 
   onAddToCart() {
-    this.addedProduct.emit(this.prodcut)
+    this.addedProduct.emit(this.product)
   }
 
   onShowDetail() {
-    this.showProduct.emit(this.prodcut.id);
+    this.showProduct.emit(this.product.id);
   }
 
 }
