@@ -8,8 +8,9 @@ import { UsersService } from './services/users.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  imgParent = ''
+  imgParent = '';
   showImage = true;
+  toke = '';
 
   constructor(
     private authService: AuthService,
@@ -39,6 +40,14 @@ export class AppComponent {
     this.authService.login('viktor@gmail.com', '12345')
     .subscribe(rta => {
       console.log(rta);
+      this.toke = rta.access_token
+    })
+  }
+
+  getProfile() {
+    this.authService.getProfile(this.toke)
+    .subscribe(profile => {
+      console.log(profile);
 
     })
   }
