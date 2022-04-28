@@ -3,6 +3,7 @@ import { CreateProductDTO, Product, UpdateProductDTO } from 'src/app/models/prod
 
 import { StoreService } from "../../services/store.service";
 import { ProductsService } from '../../services/products.service';
+import { id } from 'date-fns/locale';
 
 @Component({
   selector: 'app-products',
@@ -11,10 +12,18 @@ import { ProductsService } from '../../services/products.service';
 })
 export class ProductsComponent {
 
+  @Input() products: Product[] = [];
+  // @Input() productId: string | null = null;
+  @Input()
+  set productId(id: string | null) {
+    if (id) {
+      this.onShowDetail(id)
+    }
+  }
+  @Output() loadMore = new EventEmitter();
+
   myShoppingCart: Product[] = [];
   total = 0;
-  @Input() products: Product[] = [];
-  @Output() loadMore = new EventEmitter();
   showProductDetail = false;
   productsChosen: Product = {
     id: '',
@@ -48,7 +57,10 @@ export class ProductsComponent {
 
   onShowDetail(id: string) {
     this.statusDetail = 'loading';
-    this.toggleProductDetail();
+    if (!this.showProductDetail) {
+      this.showProductDetail = true;
+    }
+    // this.toggleProductDetail();
     this.productsService.getProduct(id)
     .subscribe(data => {
       this.productsChosen = data;
