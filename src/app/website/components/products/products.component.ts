@@ -1,8 +1,8 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CreateProductDTO, Product, UpdateProductDTO } from 'src/app/models/product.models';
 
-import { StoreService } from "../../services/store.service";
-import { ProductsService } from '../../services/products.service';
+import { StoreService } from "../../../services/store.service";
+import { ProductsService } from '../../../services/products.service';
 import { id } from 'date-fns/locale';
 
 @Component({
