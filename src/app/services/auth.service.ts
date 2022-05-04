@@ -12,7 +12,7 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class AuthService {
 
-  private apiUrl = 'https://young-sands-07814.herokuapp.com/api/auth'
+  private apiUrl = 'https://damp-spire-59848.herokuapp.com/api/auth'
   private user = new BehaviorSubject<User | null>(null)
   user$ = this.user.asObservable();
 
