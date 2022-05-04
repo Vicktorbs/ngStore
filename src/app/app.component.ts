@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthService } from './services/auth.service';
 import { FilesService } from './services/files.service';
+import { TokenService } from './services/token.service';
 import { UsersService } from './services/users.service';
 
 @Component({
@@ -8,7 +9,7 @@ import { UsersService } from './services/users.service';
   template: '<router-outlet></router-outlet>',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   imgParent = '';
   showImage = true;
   toke = '';
@@ -17,8 +18,16 @@ export class AppComponent {
   constructor(
     private authService: AuthService,
     private usersService: UsersService,
-    private filesService: FilesService
+    private filesService: FilesService,
+    private tokenService: TokenService
   ) {}
+
+  ngOnInit() {
+    const toke = this.tokenService.getToken();
+    if (toke) {
+      this.authService.getProfile().subscribe();
+    }
+  }
 
   onLoaded(img: string) {
     console.log('log padre', img);
@@ -32,7 +41,8 @@ export class AppComponent {
     this.usersService.create({
       name: 'victor',
       email: 'viktor@gmail.com',
-      password: '12345'
+      password: '12345',
+      role: 'customer'
     }).subscribe(rta => {
       console.log(rta);
 

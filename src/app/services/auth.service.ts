@@ -5,6 +5,7 @@ import { User } from '../models/user.model';
 import { Auth } from '../models/auth.model';
 import { switchMap, tap } from 'rxjs/operators';
 import { TokenService } from './token.service';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,8 @@ import { TokenService } from './token.service';
 export class AuthService {
 
   private apiUrl = 'https://young-sands-07814.herokuapp.com/api/auth'
-
+  private user = new BehaviorSubject<User | null>(null)
+  user$ = this.user.asObservable();
 
   constructor(
     private http: HttpClient,
@@ -27,14 +29,10 @@ export class AuthService {
   }
 
   getProfile() {
-    // const headers = new HttpHeaders();
-    // headers.set('Authorization',  `Bearer ${token}`);
-    return this.http.get<User>(`${this.apiUrl}/profile`, {
-      // headers: {
-      //   Authorization: `Bearer ${token}`,
-        // 'Content-type': 'application/json'
-      // }
-    });
+    return this.http.get<User>(`${this.apiUrl}/profile`)
+    .pipe(
+      tap(user => this.user.next(user))
+    );
   }
 
   loginAndGet(email: string, password: string) {
@@ -42,5 +40,9 @@ export class AuthService {
     .pipe(
       switchMap(rta => this.getProfile()),
     )
+  }
+
+  logout() {
+    this.tokenService.removeToken();
   }
 }
