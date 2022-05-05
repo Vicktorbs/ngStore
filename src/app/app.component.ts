@@ -1,83 +1,85 @@
-import { Component } from '@angular/core';
-
-import { Product } from './product.model';
+import { Component, OnInit } from '@angular/core';
+import { AuthService } from './services/auth.service';
+import { FilesService } from './services/files.service';
+import { TokenService } from './services/token.service';
+import { UsersService } from './services/users.service';
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html',
+  template: '<router-outlet></router-outlet>',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
-  name = 'Victor';
-  age = 25;
-  img = 'https://www.w3schools.com/howto/img_avatar.png';
-  btnDisabled = true;
-  person = {
-    name: 'Victor',
-    age: 25,
-    avatar: 'https://www.w3schools.com/howto/img_avatar.png'
-  }
-  emojis = [ '😂' , '🐦', '🐳','🌮', '💚']
-  names: string[] = ['Victor', 'Brenda', 'Fernanda', 'Maria']
-  newName = '';
-  products: Product[] = [
-    {
-      name: 'EL mejor juguete',
-      price: 565,
-      image: './assets/img/toy.jpg',
-      category: 'all',
-    },
-    {
-      name: 'Bicicleta casi nueva',
-      price: 356,
-      image: './assets/img/bike.jpg'
-    },
-    {
-      name: 'Colleción de albumnes',
-      price: 34,
-      image: './assets/img/album.jpg'
-    },
-    {
-      name: 'Mis libros',
-      price: 23,
-      image: './assets/img/books.jpg'
-    },
-    {
-      name: 'Casa para perro',
-      price: 34,
-      image: './assets/img/house.jpg'
-    },
-    {
-      name: 'Gafas',
-      price: 3434,
-      image: './assets/img/glasses.jpg'
+export class AppComponent implements OnInit {
+  imgParent = '';
+  showImage = true;
+  toke = '';
+  imgRta = '';
+
+  constructor(
+    private authService: AuthService,
+    private usersService: UsersService,
+    private filesService: FilesService,
+    private tokenService: TokenService
+  ) {}
+
+  ngOnInit() {
+    const toke = this.tokenService.getToken();
+    if (toke) {
+      this.authService.getProfile().subscribe();
     }
-  ]
-
-  toggleButton() {
-    this.btnDisabled = !this.btnDisabled;
   }
 
-  ageIncrease() {
-    this.person.age += 1;
+  onLoaded(img: string) {
+    console.log('log padre', img);
   }
 
-  onScroll(event: Event) {
-    const element = event.target as HTMLElement;
-    console.log(element.scrollTop);
+  toggleImg() {
+    this.showImage = !this.showImage
   }
 
-  changeName(event: Event) {
+  createUser() {
+    this.usersService.create({
+      name: 'victor',
+      email: 'viktor@gmail.com',
+      password: '12345',
+      role: 'customer'
+    }).subscribe(rta => {
+      console.log(rta);
+
+    })
+  }
+
+  login() {
+    this.authService.login('viktor@gmail.com', '12345')
+    .subscribe(rta => {
+      console.log(rta);
+      this.toke = rta.access_token
+    })
+  }
+
+  getProfile() {
+    this.authService.getProfile()
+    .subscribe(profile => {
+      console.log(profile);
+
+    })
+  }
+
+  downloadPdf() {
+    this.filesService.getFile('my.pdf', 'https://young-sands-07814.herokuapp.com/api/files/dummy.pdf', 'application/pdf')
+    .subscribe();
+  }
+
+  onUpload(event: Event) {
     const element = event.target as HTMLInputElement;
-    this.person.name = element.value;
+    const file = element.files?.item(0);
+    if (file) {
+      this.filesService.uploadFile(file)
+      .subscribe(rta => {
+        this.imgRta = rta.location;
+      });
+    }
+
   }
 
-  addName() {
-    this.names.push(this.newName);
-    this.newName = '';
-  }
-
-  deleteName(index: number) {
-    this.names.splice(index, 1)
-  }
 }
