@@ -1,5 +1,5 @@
 [build]
-  publish = "dist/my-store-router"
+  publish = "dist/my-angular-store"
   command = "ng build"
 [[redirects]]
   from = "/*"
